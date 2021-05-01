@@ -1,4 +1,4 @@
-#!/usr/bin/python3.6
+#!/usr/bin/python3
 
 # Run me as a cronjob
 
@@ -24,9 +24,9 @@ if os.path.isfile(LOCK_FILE):
             os.system("rm " + ufw_files[0])
         else:
             print("Time to go")
-            exit
+            exit()
     print("Nothing to be done")
-    exit
+    exit()
 else:
     # Initialize, close firewall
     os.system("touch " + LOCK_FILE)
@@ -34,4 +34,4 @@ else:
 os.system("ufw default deny outgoing")
 os.system("ufw default deny incoming")
 
-exit
+exit()

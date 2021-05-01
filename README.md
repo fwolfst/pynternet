@@ -30,6 +30,11 @@ once, if not, close the firewall.
   ```
   gcc pynternet.c -o pynternet_open
   ```
+* Make it a suid, so it can manipulate ufw rules
+```
+  sudo chown root pynternet_open
+  sudo chmod u+s pynternet_open
+```
 * Add cronjob
   ```
   sudo crontab -u root -e
