@@ -1,0 +1,63 @@
+#!/usr/bin/python3.6
+
+import os
+import base64
+
+import tkinter as tk
+from tkinter import *
+from tkinter import ttk
+from datetime import datetime
+
+class pynternet( Frame ):
+    def __init__( self ):
+        tk.Frame.__init__(self)
+        self.pack()
+        self.master.title("pynternet")
+        self.unlock_button = Button(self, text = "unlock", width = 25,
+                              command = self.unlock )
+        self.duration_entry = Entry(self, fg="yellow", bg="blue", width=50)
+        self.password_entry = Entry(self, fg="yellow", bg="blue", width=50,
+                show="*")
+
+        self.duration_label = Label(self, text = "Duration")
+        self.duration_label.grid(row = 0, column = 0)
+        self.password_label = Label(self, text = "Password")
+        self.password_label.grid(row = 1, column = 0)
+
+        self.duration_entry.grid(row = 0, column = 1, columnspan = 2, sticky = W+E+N+S )
+        self.password_entry.grid(row = 1, column = 1, columnspan = 2, sticky = W+E+N+S )
+        self.unlock_button.grid( row = 2, column = 1, columnspan = 2, sticky = W+E+N+S )
+
+        exit_button = Button(self, text="Exit", command=self.quit)
+        exit_button.grid(row=3, column=1, columnspan=2)
+
+
+    def unlock(self):
+        b64 = base64.b64encode(self.password_entry.get().encode("utf-8"))
+        b64s = str(b64, "utf-8")
+        if b64s != "c3VwZXI=":
+            return
+
+        # Place file and unlock
+        duration = int(self.duration_entry.get())
+
+        # Get current date
+        now = datetime.now()
+        timestamp = datetime.timestamp(now)
+        target = timestamp + 60 * duration
+
+        filename = str(target) + ".ufw"
+        print(filename)
+        os.system("touch /tmp/"+filename)
+        os.system("ufw default allow outgoing")
+        os.system("ufw default deny incoming")
+
+        print("Ok - opened")
+        self.quit()
+
+def main(): 
+    pynternet().mainloop()
+
+if __name__ == '__main__':
+    main()
+
